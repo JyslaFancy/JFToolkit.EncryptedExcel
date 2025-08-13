@@ -1,0 +1,178 @@
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
+using NPOI.POIFS.Crypt;
+using NPOI.POIFS.FileSystem;
+using System;
+using System.IO;
+
+namespace JFToolkit.EncryptedExcel;
+
+/// <summary>
+/// Provides methods for saving Excel files with optional encryption
+/// </summary>
+public static class EncryptedExcelWriter
+{
+    /// <summary>
+    /// Saves a workbook to a file without encryption
+    /// </summary>
+    /// <param name="workbook">The workbook to save</param>
+    /// <param name="filePath">Path where to save the file</param>
+    /// <exception cref="ArgumentNullException">Thrown when workbook is null</exception>
+    /// <exception cref="ArgumentException">Thrown when file path is null or empty</exception>
+    public static void SaveToFile(IWorkbook workbook, string filePath)
+    {
+        if (workbook == null)
+            throw new ArgumentNullException(nameof(workbook));
+        
+        if (string.IsNullOrWhiteSpace(filePath))
+            throw new ArgumentException("File path cannot be null or empty", nameof(filePath));
+
+        using var fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write);
+        workbook.Write(fileStream);
+    }
+
+    /// <summary>
+    /// Saves a workbook to a stream without encryption
+    /// </summary>
+    /// <param name="workbook">The workbook to save</param>
+    /// <param name="stream">Stream to write to</param>
+    /// <exception cref="ArgumentNullException">Thrown when workbook or stream is null</exception>
+    public static void SaveToStream(IWorkbook workbook, Stream stream)
+    {
+        if (workbook == null)
+            throw new ArgumentNullException(nameof(workbook));
+        
+        if (stream == null)
+            throw new ArgumentNullException(nameof(stream));
+
+        workbook.Write(stream);
+    }
+
+    /// <summary>
+    /// Saves a workbook as encrypted Excel file using multiple automation approaches
+    /// </summary>
+    /// <param name="workbook">The workbook to save</param>
+    /// <param name="filePath">Path where to save the file</param>
+    /// <param name="password">Password to encrypt the file with</param>
+    /// <exception cref="ArgumentNullException">Thrown when workbook is null</exception>
+    /// <exception cref="ArgumentException">Thrown when file path is null or empty</exception>
+    public static void SaveEncryptedToFile(IWorkbook workbook, string filePath, string password)
+    {
+        if (workbook == null)
+            throw new ArgumentNullException(nameof(workbook));
+        
+        if (string.IsNullOrWhiteSpace(filePath))
+            throw new ArgumentException("File path cannot be null or empty", nameof(filePath));
+
+        if (string.IsNullOrWhiteSpace(password))
+            throw new ArgumentException("Password cannot be null or empty", nameof(password));
+
+        // Create temporary unencrypted file
+        var tempFile = Path.GetTempFileName();
+        var tempExcelFile = Path.ChangeExtension(tempFile, ".xlsx");
+        
+        try
+        {
+            // First save as unencrypted to a temporary file
+            SaveToFile(workbook, tempExcelFile);
+            
+            // Try PowerShell approach first (more reliable)
+            if (PowerShellExcelHelper.IsExcelAvailable())
+            {
+                Console.WriteLine("   Attempting PowerShell automation...");
+                bool success = PowerShellExcelHelper.EncryptExcelFile(tempExcelFile, filePath, password);
+                if (success)
+                {
+                    Console.WriteLine("✅ File encrypted successfully using PowerShell automation");
+                    return;
+                }
+            }
+            
+            // Fallback to COM automation
+            if (ExcelAutomationHelper.IsExcelAvailable())
+            {
+                Console.WriteLine("   Attempting COM automation...");
+                bool success = ExcelAutomationHelper.EncryptExcelFile(tempExcelFile, filePath, password);
+                if (success)
+                {
+                    Console.WriteLine("✅ File encrypted successfully using COM automation");
+                    return;
+                }
+            }
+            
+            // If all automation fails, save unencrypted with instructions
+            SaveToFile(workbook, filePath);
+            Console.WriteLine("⚠️ Automation unavailable - saved as unencrypted");
+            Console.WriteLine($"   To encrypt: Open '{Path.GetFileName(filePath)}' in Excel and use 'Save As' with password");
+        }
+        finally
+        {
+            // Clean up temporary files
+            try { if (File.Exists(tempFile)) File.Delete(tempFile); } catch { }
+            try { if (File.Exists(tempExcelFile)) File.Delete(tempExcelFile); } catch { }
+        }
+    }
+
+    /// <summary>
+    /// Saves a workbook as encrypted Excel to a stream
+    /// Note: This method is currently not supported due to NPOI limitations
+    /// </summary>
+    /// <param name="workbook">The workbook to save</param>
+    /// <param name="stream">Stream to write to</param>
+    /// <param name="password">Password to encrypt the file with</param>
+    /// <exception cref="ArgumentNullException">Thrown when workbook or stream is null</exception>
+    /// <exception cref="ArgumentException">Thrown when password is null or empty</exception>
+    /// <exception cref="NotImplementedException">Always thrown as this method is not currently supported</exception>
+    public static void SaveEncryptedToStream(IWorkbook workbook, Stream stream, string password)
+    {
+        if (workbook == null)
+            throw new ArgumentNullException(nameof(workbook));
+        
+        if (stream == null)
+            throw new ArgumentNullException(nameof(stream));
+        
+        if (string.IsNullOrWhiteSpace(password))
+            throw new ArgumentException("Password cannot be null or empty", nameof(password));
+
+        throw new NotImplementedException(
+            "SaveEncryptedToStream is not supported due to NPOI encryption limitations. " +
+            "Use SaveEncryptedToFile() instead, which uses Excel automation as a workaround.");
+    }
+
+    /// <summary>
+    /// Gets the workbook as a byte array without encryption
+    /// </summary>
+    /// <param name="workbook">The workbook to convert</param>
+    /// <returns>Byte array containing the Excel file</returns>
+    /// <exception cref="ArgumentNullException">Thrown when workbook is null</exception>
+    public static byte[] ToByteArray(IWorkbook workbook)
+    {
+        if (workbook == null)
+            throw new ArgumentNullException(nameof(workbook));
+
+        using var stream = new MemoryStream();
+        workbook.Write(stream);
+        return stream.ToArray();
+    }
+
+    /// <summary>
+    /// Gets the workbook as an encrypted byte array
+    /// </summary>
+    /// <param name="workbook">The workbook to convert</param>
+    /// <param name="password">Password to encrypt with</param>
+    /// <returns>Byte array containing the encrypted Excel file</returns>
+    /// <exception cref="ArgumentNullException">Thrown when workbook is null</exception>
+    /// <exception cref="ArgumentException">Thrown when password is null or empty</exception>
+    public static byte[] ToEncryptedByteArray(IWorkbook workbook, string password)
+    {
+        if (workbook == null)
+            throw new ArgumentNullException(nameof(workbook));
+        
+        if (string.IsNullOrWhiteSpace(password))
+            throw new ArgumentException("Password cannot be null or empty", nameof(password));
+
+        using var stream = new MemoryStream();
+        SaveEncryptedToStream(workbook, stream, password);
+        return stream.ToArray();
+    }
+}

@@ -1,0 +1,108 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Target multiple frameworks for broader compatibility -->
+    <TargetFrameworks>netstandard2.0;net6.0;net8.0;net9.0</TargetFrameworks>
+    
+    <!-- Language version for C# features -->
+    <LangVersion>12.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    
+    <!-- NuGet Package Information -->
+    <PackageId>JFToolkit.EncryptedExcel</PackageId>
+    <Version>1.1.0</Version>
+    <Authors>Haral</Authors>
+    <Company>JFToolkit</Company>
+    <Product>JFToolkit.EncryptedExcel</Product>
+    <Description>A .NET library for reading, modifying, and saving password-encrypted Excel files. Built on NPOI with support for both reading encrypted files and saving with encryption using Excel automation. Perfect for applications that need to process secure Excel files while maintaining encryption. Supports .NET Standard 2.0, .NET 6.0, .NET 8.0, and .NET 9.0.</Description>
+    <PackageTags>excel;encryption;password;npoi;xlsx;xls;encrypted;automation;office;netstandard;net6;net8;net9</PackageTags>
+    <PackageProjectUrl>https://github.com/yourusername/JFToolkit</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/yourusername/JFToolkit</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes>
+      v1.1.0:
+      - Added support for .NET Standard 2.0 (broader compatibility)
+      - Added support for .NET 6.0, .NET 8.0, and .NET 9.0
+      - Compatible with .NET Framework 4.6.1+ via .NET Standard 2.0
+      - Compatible with .NET Core 2.0+ via .NET Standard 2.0
+      - Improved cross-platform compatibility
+      
+      v1.0.0:
+      - Read password-encrypted Excel files (.xlsx, .xls)
+      - Modify cell data with type safety
+      - Add new rows and columns
+      - Save with encryption using Excel automation
+      - Comprehensive error handling and fallback options
+      - Extension methods for easy Excel manipulation
+    </PackageReleaseNotes>
+    <Copyright>Copyright © 2025 JFToolkit</Copyright>
+    
+    <!-- Build Configuration -->
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    
+    <!-- Target multiple frameworks for broader compatibility -->
+    <TargetFrameworks>netstandard2.0;net6.0;net8.0;net9.0</TargetFrameworks>
+    
+    <!-- Language version for C# features -->
+    <LangVersion>12.0</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <NoWarn>$(NoWarn);CA1416</NoWarn> <!-- Suppress Windows-specific COM warnings -->
+  </PropertyGroup>
+
+  <!-- Framework-specific properties -->
+  <PropertyGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <!-- Additional packages for .NET Standard 2.0 compatibility -->
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
+    <PackageReference Include="System.Diagnostics.Process" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NPOI" Version="2.7.4" />
+  </ItemGroup>
+
+  <!-- Include README and other documentation files in the package -->
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+    <None Include="REAL_WORLD_SUCCESS.md" Pack="true" PackagePath="docs\" />
+  </ItemGroup>
+
+  <!-- Exclude test projects from compilation -->
+  <ItemGroup>
+    <Compile Remove="QuickTest\**" />
+    <Compile Remove="RealWorldTest\**" />
+    <Compile Remove="SaveTest\**" />
+    <Compile Remove="TestEncryptedExcel\**" />
+    <Compile Remove="VerifyTest\**" />
+    <None Remove="QuickTest\**" />
+    <None Remove="RealWorldTest\**" />
+    <None Remove="SaveTest\**" />
+    <None Remove="TestEncryptedExcel\**" />
+    <None Remove="VerifyTest\**" />
+  </ItemGroup>
+
+  <!-- Exclude example files from compilation for .NET Standard 2.0 compatibility -->
+  <ItemGroup>
+    <Compile Remove="Examples.cs" />
+    <Compile Remove="SimpleTest.cs" />
+    <Compile Remove="ModifyAndSaveExamples.cs" />
+    <None Include="Examples.cs" Pack="true" PackagePath="examples\" />
+    <None Include="SimpleTest.cs" Pack="true" PackagePath="examples\" />
+    <None Include="ModifyAndSaveExamples.cs" Pack="true" PackagePath="examples\" />
+  </ItemGroup>
+
+</Project>
