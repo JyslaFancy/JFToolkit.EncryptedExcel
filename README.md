@@ -4,11 +4,11 @@
 [![Downloads](https://img.shields.io/nuget/dt/JFToolkit.EncryptedExcel.svg)](https://www.nuget.org/packages/JFToolkit.EncryptedExcel/)
 [![GitHub](https://img.shields.io/github/license/JyslaFancy/JFToolkit.EncryptedExcel)](https://github.com/JyslaFancy/JFToolkit.EncryptedExcel/blob/main/LICENSE)
 
-A powerful .NET library for reading, modifying, and saving password-encrypted Excel files. Built on NPOI with intelligent automation for maintaining encryption.
+A powerful .NET library for reading, modifying, and saving password-encrypted Excel files. Built on NPOI with intelligent automation for maintaining encryption. Supports .xlsx, .xlsm (macro-enabled), and .xls formats.
 
 ## 🚀 Key Features
 
-- ✅ **Read password-encrypted Excel files** (.xlsx, .xls)
+- ✅ **Read password-encrypted Excel files** (.xlsx, .xlsm, .xls)
 - ✅ **Modify data with type safety** (strings, numbers, dates, booleans)
 - ✅ **Add new rows and columns** with ease
 - ✅ **Save with encryption** using Excel automation

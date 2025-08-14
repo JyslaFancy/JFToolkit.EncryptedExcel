@@ -1,5 +1,7 @@
 using JFToolkit.EncryptedExcel;
 using NPOI.SS.UserModel;
+using System;
+using System.IO;
 
 namespace JFToolkit.EncryptedExcel.Examples;
 
@@ -149,6 +151,48 @@ public static class Examples
                     Console.WriteLine($"  First row: {string.Join(" | ", rowData.Take(5))}");
                 }
             }
+        }
+    }
+    
+    /// <summary>
+    /// Example of working with macro-enabled Excel files (.xlsm)
+    /// </summary>
+    /// <param name="xlsmFilePath">Path to the encrypted .xlsm file</param>
+    /// <param name="password">Password for the file</param>
+    public static void MacroEnabledExample(string xlsmFilePath, string password)
+    {
+        try
+        {
+            // Open the encrypted macro-enabled Excel file
+            using var reader = EncryptedExcelReader.OpenFile(xlsmFilePath, password);
+            
+            Console.WriteLine($"Successfully opened macro-enabled file: {Path.GetFileName(xlsmFilePath)}");
+            Console.WriteLine($"Number of sheets: {reader.NumberOfSheets}");
+            
+            // Read data just like any other Excel file
+            var firstSheet = reader.GetFirstSheet();
+            if (firstSheet != null)
+            {
+                Console.WriteLine($"First sheet name: {firstSheet.SheetName}");
+                
+                // Read some data
+                var cellValue = firstSheet.GetCellValue(0, 0);
+                Console.WriteLine($"Cell A1 value: {cellValue}");
+                
+                // Note: Macros are preserved but cannot be executed through NPOI
+                // The file structure and data remain intact
+            }
+            
+            // Save as macro-enabled file (preserves macros)
+            var outputPath = xlsmFilePath.Replace(".xlsm", "_modified.xlsm");
+            EncryptedExcelWriter.SaveEncryptedToFile(reader.Workbook!, outputPath, password);
+            
+            Console.WriteLine($"Saved macro-enabled file to: {outputPath}");
+            Console.WriteLine("Note: Macros are preserved in the saved file");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error processing macro-enabled file: {ex.Message}");
         }
     }
     

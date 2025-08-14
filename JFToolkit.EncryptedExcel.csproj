@@ -12,18 +12,25 @@
     
     <!-- NuGet Package Information -->
     <PackageId>JFToolkit.EncryptedExcel</PackageId>
-    <Version>1.1.1</Version>
+    <Version>1.2.0</Version>
     <Authors>Haral</Authors>
     <Company>JFToolkit</Company>
     <Product>JFToolkit.EncryptedExcel</Product>
-    <Description>A .NET library for reading, modifying, and saving password-encrypted Excel files. Built on NPOI with support for both reading encrypted files and saving with encryption using Excel automation. Perfect for applications that need to process secure Excel files while maintaining encryption. Supports .NET Standard 2.0, .NET 6.0, .NET 8.0, and .NET 9.0.</Description>
-    <PackageTags>excel;encryption;password;npoi;xlsx;xls;encrypted;automation;office;netstandard;net6;net8;net9</PackageTags>
+    <Description>A .NET library for reading, modifying, and saving password-encrypted Excel files. Built on NPOI with support for both reading encrypted files and saving with encryption using Excel automation. Supports .xlsx, .xlsm (macro-enabled), and .xls formats. Perfect for applications that need to process secure Excel files while maintaining encryption. Supports .NET Standard 2.0, .NET 6.0, .NET 8.0, and .NET 9.0.</Description>
+    <PackageTags>excel;encryption;password;npoi;xlsx;xlsm;xls;encrypted;automation;office;macro;netstandard;net6;net8;net9</PackageTags>
     <PackageProjectUrl>https://github.com/JyslaFancy/JFToolkit.EncryptedExcel</PackageProjectUrl>
     <RepositoryUrl>https://github.com/JyslaFancy/JFToolkit.EncryptedExcel</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>
+      v1.2.0:
+      - Added explicit support for macro-enabled Excel files (.xlsm)
+      - Enhanced documentation to clearly indicate .xlsm support
+      - Added macro-enabled file example in Examples.cs
+      - Updated package tags to include 'xlsm' and 'macro'
+      - Macros are preserved when reading and saving .xlsm files
+      
       v1.1.1:
       - Fixed GitHub repository links in NuGet package metadata
       - Package now correctly links to https://github.com/JyslaFancy/JFToolkit.EncryptedExcel

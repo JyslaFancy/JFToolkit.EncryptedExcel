@@ -8,7 +8,7 @@ using System.IO;
 namespace JFToolkit.EncryptedExcel;
 
 /// <summary>
-/// Provides methods for saving Excel files with optional encryption
+/// Provides methods for saving Excel files (.xlsx, .xlsm, .xls) with optional encryption
 /// </summary>
 public static class EncryptedExcelWriter
 {
@@ -49,7 +49,7 @@ public static class EncryptedExcelWriter
     }
 
     /// <summary>
-    /// Saves a workbook as encrypted Excel file using multiple automation approaches
+    /// Saves a workbook as encrypted Excel file (.xlsx, .xlsm, .xls) using multiple automation approaches
     /// </summary>
     /// <param name="workbook">The workbook to save</param>
     /// <param name="filePath">Path where to save the file</param>

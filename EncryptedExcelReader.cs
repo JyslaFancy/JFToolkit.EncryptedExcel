@@ -9,7 +9,7 @@ using System.IO;
 namespace JFToolkit.EncryptedExcel;
 
 /// <summary>
-/// Provides methods for opening and reading password-encrypted Excel files
+/// Provides methods for opening and reading password-encrypted Excel files (.xlsx, .xlsm, .xls)
 /// </summary>
 public class EncryptedExcelReader : IDisposable
 {
@@ -23,6 +23,7 @@ public class EncryptedExcelReader : IDisposable
 
     /// <summary>
     /// Opens an encrypted Excel file from a file path
+    /// Supports .xlsx, .xlsm (macro-enabled), and .xls formats
     /// </summary>
     /// <param name="filePath">Path to the Excel file</param>
     /// <param name="password">Password to decrypt the file</param>
@@ -44,6 +45,7 @@ public class EncryptedExcelReader : IDisposable
 
     /// <summary>
     /// Opens an encrypted Excel file from a stream
+    /// Supports .xlsx, .xlsm (macro-enabled), and .xls formats
     /// </summary>
     /// <param name="stream">Stream containing the Excel file data</param>
     /// <param name="password">Password to decrypt the file</param>
@@ -108,6 +110,7 @@ public class EncryptedExcelReader : IDisposable
 
     /// <summary>
     /// Opens an encrypted Excel file from a byte array
+    /// Supports .xlsx, .xlsm (macro-enabled), and .xls formats
     /// </summary>
     /// <param name="data">Byte array containing the Excel file data</param>
     /// <param name="password">Password to decrypt the file</param>

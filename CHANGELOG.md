@@ -12,6 +12,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Performance optimizations for large files
 - Additional Excel format support
 
+## [1.2.0] - 2025-08-14
+
+### Added
+- **Macro-Enabled Excel Support**: Explicit support for .xlsm (macro-enabled) files
+- **Enhanced Documentation**: Clear indication of .xlsm format support throughout
+- **Macro Example**: Added dedicated example for working with .xlsm files
+- **Comprehensive Testing**: Added MacroSupportTest.cs for validation
+
+### Enhanced
+- **Package Tags**: Added 'xlsm' and 'macro' tags for better discoverability
+- **File Format Documentation**: Updated all documentation to mention .xlsx, .xlsm, and .xls support
+- **API Documentation**: Enhanced XML comments to specify supported formats
+
+### Technical Details
+- NPOI's XSSFWorkbook natively supports both .xlsx and .xlsm formats
+- Macros are preserved when reading and saving .xlsm files
+- VBA code execution is not supported (security limitation)
+- All standard Excel features work normally with .xlsm files
+
 ## [1.1.1] - 2025-08-14
 
 ### Fixed
@@ -89,11 +108,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Release Date | Key Features |
 |---------|-------------|--------------|
+| 1.2.0   | 2025-08-14  | Added explicit macro-enabled Excel (.xlsm) support |
 | 1.1.1   | 2025-08-14  | Fixed GitHub repository links in NuGet package |
 | 1.1.0   | 2024-12-28  | Multi-framework support (.NET Standard 2.0+) |
 | 1.0.0   | 2024-12-28  | Initial release with encrypted Excel support |
 
 ## Migration Guide
+
+### From 1.1.1 to 1.2.0
+No breaking changes. Simply update your package reference:
+
+```xml
+<PackageReference Include="JFToolkit.EncryptedExcel" Version="1.2.0" />
+```
+
+New features in 1.2.0:
+- Explicit .xlsm (macro-enabled) file support
+- Enhanced documentation for all supported formats
+- New macro-enabled example in Examples.cs
 
 ### From 1.1.0 to 1.1.1
 No breaking changes. Simply update your package reference:
@@ -115,13 +147,23 @@ The API remains identical, but you now get broader framework compatibility.
 
 ## Support Matrix
 
-| Framework | 1.0.0 | 1.1.0 | 1.1.1 |
-|-----------|-------|-------|-------|
-| .NET 9.0 | ✅ | ✅ | ✅ |
-| .NET 8.0 | ❌ | ✅ | ✅ |
-| .NET 6.0 | ❌ | ✅ | ✅ |
-| .NET Standard 2.0 | ❌ | ✅ | ✅ |
-| .NET Framework 4.6.1+ | ❌ | ✅ (via .NET Standard 2.0) | ✅ (via .NET Standard 2.0) |
+| Framework | 1.0.0 | 1.1.0 | 1.1.1 | 1.2.0 |
+|-----------|-------|-------|-------|-------|
+| .NET 9.0 | ✅ | ✅ | ✅ | ✅ |
+| .NET 8.0 | ❌ | ✅ | ✅ | ✅ |
+| .NET 6.0 | ❌ | ✅ | ✅ | ✅ |
+| .NET Standard 2.0 | ❌ | ✅ | ✅ | ✅ |
+| .NET Framework 4.6.1+ | ❌ | ✅ (via .NET Standard 2.0) | ✅ (via .NET Standard 2.0) | ✅ (via .NET Standard 2.0) |
+
+## File Format Support
+
+| Format | Description | 1.0.0 | 1.1.0+ | 1.2.0+ |
+|--------|-------------|-------|--------|--------|
+| .xlsx | Excel Workbook | ✅ | ✅ | ✅ |
+| .xls | Excel 97-2003 | ✅ | ✅ | ✅ |
+| .xlsm | Excel Macro-Enabled | ✅* | ✅* | ✅ (Explicit) |
+
+*Supported but not explicitly documented
 
 ## Acknowledgments
 
