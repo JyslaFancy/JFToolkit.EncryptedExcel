@@ -12,6 +12,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Performance optimizations for large files
 - Additional Excel format support
 
+## [1.1.1] - 2025-08-14
+
+### Fixed
+- **GitHub Repository Links**: Fixed NuGet package metadata to correctly link to GitHub repository
+- **Package Cleanup**: Removed references to deleted development files from package includes
+- **Professional Package**: NuGet package now properly links to https://github.com/JyslaFancy/JFToolkit.EncryptedExcel
+
+### Technical Details
+- Updated `PackageProjectUrl` and `RepositoryUrl` in project file
+- Cleaned up package file references after repository cleanup
+- Maintained all existing functionality and compatibility
+
 ## [1.1.0] - 2024-12-28
 
 ### Added
@@ -77,10 +89,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 | Version | Release Date | Key Features |
 |---------|-------------|--------------|
+| 1.1.1   | 2025-08-14  | Fixed GitHub repository links in NuGet package |
 | 1.1.0   | 2024-12-28  | Multi-framework support (.NET Standard 2.0+) |
 | 1.0.0   | 2024-12-28  | Initial release with encrypted Excel support |
 
 ## Migration Guide
+
+### From 1.1.0 to 1.1.1
+No breaking changes. Simply update your package reference:
+
+```xml
+<PackageReference Include="JFToolkit.EncryptedExcel" Version="1.1.1" />
+```
+
+This update only improves the NuGet package metadata with correct GitHub links.
 
 ### From 1.0.0 to 1.1.0
 No breaking changes. Simply update your package reference:
@@ -93,13 +115,13 @@ The API remains identical, but you now get broader framework compatibility.
 
 ## Support Matrix
 
-| Framework | 1.0.0 | 1.1.0 |
-|-----------|-------|-------|
-| .NET 9.0 | ✅ | ✅ |
-| .NET 8.0 | ❌ | ✅ |
-| .NET 6.0 | ❌ | ✅ |
-| .NET Standard 2.0 | ❌ | ✅ |
-| .NET Framework 4.6.1+ | ❌ | ✅ (via .NET Standard 2.0) |
+| Framework | 1.0.0 | 1.1.0 | 1.1.1 |
+|-----------|-------|-------|-------|
+| .NET 9.0 | ✅ | ✅ | ✅ |
+| .NET 8.0 | ❌ | ✅ | ✅ |
+| .NET 6.0 | ❌ | ✅ | ✅ |
+| .NET Standard 2.0 | ❌ | ✅ | ✅ |
+| .NET Framework 4.6.1+ | ❌ | ✅ (via .NET Standard 2.0) | ✅ (via .NET Standard 2.0) |
 
 ## Acknowledgments
 
