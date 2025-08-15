@@ -12,11 +12,11 @@
     
     <!-- NuGet Package Information -->
     <PackageId>JFToolkit.EncryptedExcel</PackageId>
-    <Version>1.2.0</Version>
-    <Authors>Haral</Authors>
+    <Version>1.4.0</Version>
+    <Authors>JyslaFancy</Authors>
     <Company>JFToolkit</Company>
     <Product>JFToolkit.EncryptedExcel</Product>
-    <Description>A .NET library for reading, modifying, and saving password-encrypted Excel files. Built on NPOI with support for both reading encrypted files and saving with encryption using Excel automation. Supports .xlsx, .xlsm (macro-enabled), and .xls formats. Perfect for applications that need to process secure Excel files while maintaining encryption. Supports .NET Standard 2.0, .NET 6.0, .NET 8.0, and .NET 9.0.</Description>
+    <Description>A clean, focused .NET library for working with password-encrypted Excel files. Features the new SecureExcelWorkbook API for simple encrypted Excel workflows: open → modify → save. Built on NPOI with Excel automation for encryption. Reading and modifying works on any platform; saving with encryption requires Microsoft Excel installed (Windows).</Description>
     <PackageTags>excel;encryption;password;npoi;xlsx;xlsm;xls;encrypted;automation;office;macro;netstandard;net6;net8;net9</PackageTags>
     <PackageProjectUrl>https://github.com/JyslaFancy/JFToolkit.EncryptedExcel</PackageProjectUrl>
     <RepositoryUrl>https://github.com/JyslaFancy/JFToolkit.EncryptedExcel</RepositoryUrl>
@@ -24,6 +24,57 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>
+      v1.4.0 - MAJOR CLEANUP AND RENAME:
+      - BREAKING: Renamed EncryptedXlsmManager to SecureExcelWorkbook (more descriptive)
+      - DOCUMENTATION: Clarified Excel installation requirement for encryption features
+      - Repository cleanup: Removed test files, examples, and alternative implementations from main library
+      - Streamlined to core functionality: SecureExcelWorkbook for simple workflow
+      - Fixed single password prompt issue (no more double password prompts in Excel)
+      - Supports separate file saving with SaveAs() method
+      - Cleaner API focused on the most common use case: open, modify, save encrypted Excel
+      - Simplified project structure for easier maintenance and understanding
+      
+      v1.3.0:
+      - ENHANCED: Improved encryption fallback system with better error messages
+      - Added framework for future cross-platform encryption (OpenXML placeholder)
+      - Better detection and handling when Excel automation is unavailable
+      - Clearer guidance for users in environments without Excel
+      - Simplified approach focusing on reliable Excel automation when available
+      - Maintains excellent reading capabilities for encrypted files on all platforms
+      - Preparation for future true cross-platform encryption implementation
+      
+      v1.2.5:
+      - SIMPLIFIED FIX: Removed complex two-stage save process that was causing Excel content errors
+      - Direct .xlsm save with explicit format parameters and VBA automation security settings
+      - Added explicit false parameters for Excel SaveAs to prevent format confusion
+      - Improved PowerShell automation with .xlsm-specific handling
+      - Should completely resolve "We found a problem with some content" errors
+      
+      v1.2.4:
+      - CRITICAL FIX: Completely resolved "We found a problem with some content" error for .xlsm files
+      - Implemented two-stage save process: .xlsx first, then convert to .xlsm in Excel
+      - This eliminates content format inconsistencies that caused Excel errors
+      - Files now open cleanly in Excel without any error prompts or recovery dialogs
+      - Improved Excel automation reliability for macro-enabled files
+      
+      v1.2.3:
+      - CRITICAL FIX: Resolved "We found a problem with some content" error when opening encrypted .xlsm files in Excel
+      - Fixed file format specification in Excel automation (COM and PowerShell)
+      - Properly handle .xlsm file format (52 - xlOpenXMLWorkbookMacroEnabled) during encryption
+      - Fixed temporary file handling to prevent corruption during .xlsm encryption
+      - Excel will no longer prompt for content recovery when opening encrypted .xlsm files
+      
+      v1.2.2:
+      - FIXED: Package author metadata corrected from "Haral" to "JyslaFancy"
+      - Ensures proper attribution in NuGet Package Manager displays
+      
+      v1.2.1:
+      - FIXED: "File format not valid" error when creating .xlsm files
+      - Improved .xlsm handling to avoid Excel compatibility issues
+      - Added clear documentation about NPOI .xlsm limitations
+      - Files with .xlsm extension are now saved as .xlsx to prevent errors
+      - Added helper methods for proper macro-enabled file workflow
+      
       v1.2.0:
       - Added explicit support for macro-enabled Excel files (.xlsm)
       - Enhanced documentation to clearly indicate .xlsm support
@@ -71,6 +122,10 @@
     <NoWarn>$(NoWarn);CA1416</NoWarn> <!-- Suppress Windows-specific COM warnings -->
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <NoWarn>$(NoWarn);CA1416</NoWarn> <!-- Suppress Windows-specific COM warnings -->
+  </PropertyGroup>
+
   <!-- Framework-specific properties -->
   <PropertyGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
     <ImplicitUsings>enable</ImplicitUsings>
@@ -105,12 +160,7 @@
     <None Remove="VerifyTest\**" />
   </ItemGroup>
 
-  <!-- Exclude example files from compilation for .NET Standard 2.0 compatibility -->
-  <ItemGroup>
-    <Compile Remove="Examples.cs" />
-    <Compile Remove="ModifyAndSaveExamples.cs" />
-    <None Include="Examples.cs" Pack="true" PackagePath="examples\" />
-    <None Include="ModifyAndSaveExamples.cs" Pack="true" PackagePath="examples\" />
-  </ItemGroup>
+  <!-- No example files to package (removed for cleaner library) -->
+  <!-- Example usage is documented in the README.md instead -->
 
 </Project>
