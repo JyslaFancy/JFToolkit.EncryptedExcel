@@ -12,6 +12,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Performance optimizations for large files
 - Additional Excel format support
 
+## [1.5.0] - 2025-08-17
+
+### Changed
+- Removed macro-enabled (.xlsm) support claims due to unreliable encrypted save behavior.
+- Updated documentation (README, project description, tags) to clearly state support for .xlsx and .xls only.
+- Simplified Excel automation helper by removing .xlsm-specific branching.
+- Adjusted `SecureExcelWorkbook` validation to accept only .xlsx/.xls.
+
+### Notes
+- Opening existing encrypted .xlsm files remains out of scope for this release; focus is on stable encrypted workflows for .xlsx and .xls.
+- Future reinstatement of .xlsm support will require reliable automated encryption without corruption.
+
+
 ## [1.4.0] - 2025-08-15
 
 ### 🚨 BREAKING CHANGES
