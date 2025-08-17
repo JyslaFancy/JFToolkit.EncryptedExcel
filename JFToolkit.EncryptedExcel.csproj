@@ -12,7 +12,7 @@
     
     <!-- NuGet Package Information -->
     <PackageId>JFToolkit.EncryptedExcel</PackageId>
-  <Version>1.5.0</Version>
+  <Version>1.5.1</Version>
     <Authors>JyslaFancy</Authors>
     <Company>JFToolkit</Company>
     <Product>JFToolkit.EncryptedExcel</Product>
@@ -23,8 +23,13 @@
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>
-  v1.5.0 - REMOVE XLSM CLAIMS:
+      v1.5.1 - PACKAGE METADATA IMPROVEMENT:
+      - Added embedded README.md for NuGet gallery display.
+      - No functional code changes.
+      
+      v1.5.0 - REMOVE XLSM CLAIMS:
   - REMOVED: Macro-enabled (.xlsm) support claims due to unreliable encryption
   - UPDATED: Documentation and tags to reflect support for .xlsx and .xls only
   - NOTE: Use Excel manually for .xlsm scenarios; library focuses on stable formats

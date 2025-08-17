@@ -13,6 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Additional Excel format support
 
 ## [1.5.0] - 2025-08-17
+-## [1.5.1] - 2025-08-17
+
+### Added
+- Embedded README.md in NuGet package via PackageReadmeFile for better gallery presentation.
+
+### Notes
+- No code changes; safe upgrade from 1.5.0.
+
 
 ### Changed
 - Removed macro-enabled (.xlsm) support claims due to unreliable encrypted save behavior.
