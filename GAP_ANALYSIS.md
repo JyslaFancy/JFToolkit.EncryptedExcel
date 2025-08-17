@@ -142,11 +142,11 @@ Supporting types:
 - 100% deterministic round‑trip when no modifications (binary equality of decrypted payload)
 - Unit & integration tests pass on CI (Windows, maybe Linux for parse/edit without encrypt until cross-platform strategy defined)
 
-## 9. Open Questions
-- Support changing password vs always reusing original? (Recommend allow optional new password)
-- Preserve original salt/IV vs generate fresh? (Security best practice: new salt/IV)
-- Support legacy Standard encryption or Agile only? (Start Agile only; fallback optional later)
-- Provide streaming API for bulk edits? (Potential enhancement)
+## 9. Design Decisions (Resolved Former Open Questions)
+- Password change on save: Supported (optional new password parameter). Default = reuse original.
+- Salt / IV policy: Always generate fresh cryptographic salt & IV for re-encryption; fallback to original only if Excel interoperability issues detected (diagnostic mode).
+- Encryption formats: Agile only initial implementation; legacy Standard RC4 explicitly out-of-scope (may throw `EncryptionFormatNotSupportedException`).
+- Streaming/bulk edit API: Deferred; will design after core round-trip (tracked as enhancement backlog item).
 
 ## 10. Immediate Next Steps
 1. Add DESIGN_ENCRYPTION.md skeleton with spec references
