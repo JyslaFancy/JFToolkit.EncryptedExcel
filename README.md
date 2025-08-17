@@ -4,17 +4,17 @@
 [![Downloads](https://img.shields.io/nuget/dt/JFToolkit.EncryptedExcel.svg)](https://www.nuget.org/packages/JFToolkit.EncryptedExcel/)
 [![GitHub](https://img.shields.io/github/license/JyslaFancy/JFToolkit.EncryptedExcel)](https://github.com/JyslaFancy/JFToolkit.EncryptedExcel/blob/main/LICENSE)
 
-A clean, focused .NET library for working with password-encrypted Excel files. Features the new **SecureExcelWorkbook** API for simple encrypted Excel workflows: open → modify → save. Built on NPOI with Excel automation for encryption.
+A clean, focused .NET library for working with password-encrypted Excel files (.xlsx and .xls). Features the **SecureExcelWorkbook** API for simple encrypted Excel workflows: open → modify → save. Built on NPOI with Excel automation for encryption.
 
-> **⚠️ Important**: **Microsoft Excel must be installed** on the machine for encryption features (SaveAs with encryption). Reading and modifying encrypted files works without Excel.
+> **⚠️ Important**: **Microsoft Excel must be installed** on the machine for encryption features (SaveAs with encryption). Reading and modifying encrypted files works without Excel. Macro-enabled .xlsm encryption is NOT supported in this release (1.5.0).
 
 ## 🚀 Key Features
 
-- ✅ **SecureExcelWorkbook API** - Simple, focused workflow for encrypted Excel files
-- ✅ **Read encrypted files** - Works on any platform (no Excel required)
+- ✅ **SecureExcelWorkbook API** - Simple workflow for encrypted Excel files
+- ✅ **Read encrypted .xlsx / .xls files** - Works on any platform (no Excel required)
 - ✅ **Modify data** - Full editing capabilities with type safety
-- ⚠️ **Save with encryption** - Requires Microsoft Excel installed (Windows)
-- ✅ **Single password prompt** - No more double password prompts in Excel  
+- ⚠️ **Save with encryption (.xlsx / .xls)** - Requires Microsoft Excel (Windows)
+- ⚠️ **.xlsm note** - Macro-enabled files can be opened if already decrypted, but encrypted .xlsm save is not supported
 - ✅ **Save to separate files** - Modify and save without overwriting originals
 
 ## 🎯 Platform Compatibility
@@ -44,7 +44,7 @@ Install-Package JFToolkit.EncryptedExcel
 dotnet add package JFToolkit.EncryptedExcel
 
 # PackageReference
-<PackageReference Include="JFToolkit.EncryptedExcel" Version="1.4.0" />
+<PackageReference Include="JFToolkit.EncryptedExcel" Version="1.5.0" />
 ```
 
 ## 🔧 Quick Start with SecureExcelWorkbook
@@ -55,7 +55,7 @@ dotnet add package JFToolkit.EncryptedExcel
 using JFToolkit.EncryptedExcel;
 
 // Open encrypted Excel file
-using var workbook = SecureExcelWorkbook.Open(@"C:\path\to\encrypted.xlsm", "password123");
+using var workbook = SecureExcelWorkbook.Open(@"C:\path\to\encrypted.xlsx", "password123");
 
 // Read current values
 var currentValue = workbook.GetCellValue(0, 0, 2); // Sheet 0, Row 0, Column C
@@ -67,10 +67,10 @@ workbook.SetCellValue(0, 1, 2, "Another Value");
 workbook.SetCellValue(0, 2, 2, DateTime.Now);
 
 // Save to a separate file (keeps original unchanged)
-bool saved = workbook.SaveAs(@"C:\path\to\modified.xlsm");
+bool saved = workbook.SaveAs(@"C:\path\to\modified.xlsx");
 if (saved)
 {
-    Console.WriteLine("✅ File saved with encryption!");
+    Console.WriteLine("✅ File saved with encryption (.xlsx)!");
     // When you open this file in Excel: SINGLE password prompt only!
 }
 else
@@ -201,9 +201,10 @@ If Excel automation is unavailable, the library:
 
 ## 📋 Supported Formats
 
-- ✅ **Excel 2007+ (.xlsx)** - Full support
-- ✅ **Excel 97-2003 (.xls)** - Full support
-- ✅ **Password-protected files** - Both formats
+- ✅ **Excel 2007+ (.xlsx)** - Full support (encrypted read/write)
+- ✅ **Excel 97-2003 (.xls)** - Full support (encrypted read/write)
+- ⚠️ **Macro-enabled (.xlsm)** - Not supported for encrypted workflows in 1.5.0
+- ✅ **Password-protected files** - .xlsx / .xls
 - ✅ **Multiple worksheets** - Complete access
 
 ## 🧪 Tested & Reliable
@@ -228,7 +229,7 @@ If Excel automation is unavailable, the library:
 ### Alternative: Save Without Encryption
 ```csharp
 // Works on any platform - no Excel required
-using var workbook = SecureExcelWorkbook.Open("encrypted.xlsm", "password");
+using var workbook = SecureExcelWorkbook.Open("encrypted.xlsx", "password");
 workbook.SetCellValue(0, 0, 2, "Modified");
 
 // Save without encryption (works everywhere)

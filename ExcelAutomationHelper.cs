@@ -15,7 +15,6 @@ public static class ExcelAutomationHelper
 {
     /// <summary>
     /// Encrypts an Excel file using Excel automation (requires Excel to be installed)
-    /// Enhanced version with improved reliability and .xlsm support
     /// </summary>
     /// <param name="unencryptedFilePath">Path to the unencrypted Excel file</param>
     /// <param name="encryptedFilePath">Path where to save the encrypted Excel file</param>
@@ -90,18 +89,9 @@ public static class ExcelAutomationHelper
             if (workbook == null)
                 return false;
 
-            // Determine the Excel file format based on target extension
+            // Determine the Excel file format based on target extension (.xlsx/.xls supported)
             var targetExtension = Path.GetExtension(encryptedFilePath).ToLowerInvariant();
-            
-            // Enhanced .xlsm file handling
-            if (targetExtension == ".xlsm")
-            {
-                return SaveAsEncryptedXlsm(excel, workbook, encryptedFilePath, password);
-            }
-            else
-            {
-                return SaveAsEncryptedStandard(workbook, encryptedFilePath, password, targetExtension);
-            }
+            return SaveAsEncryptedStandard(workbook, encryptedFilePath, password, targetExtension);
         }
         catch (Exception)
         {
@@ -115,56 +105,6 @@ public static class ExcelAutomationHelper
         }
     }
 
-    /// <summary>
-    /// Enhanced save method specifically for .xlsm files
-    /// </summary>
-    private static bool SaveAsEncryptedXlsm(object excel, object workbook, string filePath, string password)
-    {
-        try
-        {
-            // Configure Excel for macro-enabled file handling
-            try
-            {
-                // Set automation security to low to handle macros better
-                excel.GetType().InvokeMember("AutomationSecurity", BindingFlags.SetProperty, null, excel, new object[] { 1 }); // msoAutomationSecurityLow
-                
-                // Enable trust access to VBA project object model
-                var application = excel.GetType().InvokeMember("Application", BindingFlags.GetProperty, null, excel, null);
-                if (application != null)
-                {
-                    try
-                    {
-                        application.GetType().InvokeMember("VBE", BindingFlags.GetProperty, null, application, null);
-                    }
-                    catch { /* VBE might not be available, continue */ }
-                }
-            }
-            catch { /* Security settings might not be changeable, continue */ }
-
-            // Save with .xlsm format and password protection (single password only)
-            // Using comprehensive SaveAs parameters for maximum compatibility
-            workbook.GetType().InvokeMember("SaveAs", BindingFlags.InvokeMethod, null, workbook, new object?[] {
-                Path.GetFullPath(filePath),     // Filename
-                52,                             // xlOpenXMLWorkbookMacroEnabled
-                password,                       // Password (read password)
-                Type.Missing,                   // WriteResPassword (don't set - avoids double prompt)
-                false,                         // ReadOnlyRecommended
-                false,                         // CreateBackup
-                1,                             // AccessMode (xlNoChange)
-                1,                             // ConflictResolution (xlLocalSessionChanges)
-                false,                         // AddToMru
-                Type.Missing,                  // TextCodepage
-                Type.Missing,                  // TextVisualLayout
-                false                          // Local
-            });
-            
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
-    }
 
     /// <summary>
     /// Standard save method for non-.xlsm files

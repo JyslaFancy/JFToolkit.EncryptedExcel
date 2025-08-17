@@ -12,19 +12,24 @@
     
     <!-- NuGet Package Information -->
     <PackageId>JFToolkit.EncryptedExcel</PackageId>
-    <Version>1.4.0</Version>
+  <Version>1.5.0</Version>
     <Authors>JyslaFancy</Authors>
     <Company>JFToolkit</Company>
     <Product>JFToolkit.EncryptedExcel</Product>
-    <Description>A clean, focused .NET library for working with password-encrypted Excel files. Features the new SecureExcelWorkbook API for simple encrypted Excel workflows: open → modify → save. Built on NPOI with Excel automation for encryption. Reading and modifying works on any platform; saving with encryption requires Microsoft Excel installed (Windows).</Description>
-    <PackageTags>excel;encryption;password;npoi;xlsx;xlsm;xls;encrypted;automation;office;macro;netstandard;net6;net8;net9</PackageTags>
+  <Description>A clean, focused .NET library for working with password-encrypted Excel files (.xlsx and .xls). Features the SecureExcelWorkbook API for simple encrypted Excel workflows: open → modify → save. Built on NPOI with Excel automation for encryption. Reading and modifying works on any platform; saving with encryption requires Microsoft Excel installed (Windows). NOTE: Macro-enabled .xlsm encryption is not supported in this version.</Description>
+  <PackageTags>excel;encryption;password;npoi;xlsx;xls;encrypted;automation;office;netstandard;net6;net8;net9</PackageTags>
     <PackageProjectUrl>https://github.com/JyslaFancy/JFToolkit.EncryptedExcel</PackageProjectUrl>
     <RepositoryUrl>https://github.com/JyslaFancy/JFToolkit.EncryptedExcel</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageReleaseNotes>
-      v1.4.0 - MAJOR CLEANUP AND RENAME:
+  v1.5.0 - REMOVE XLSM CLAIMS:
+  - REMOVED: Macro-enabled (.xlsm) support claims due to unreliable encryption
+  - UPDATED: Documentation and tags to reflect support for .xlsx and .xls only
+  - NOTE: Use Excel manually for .xlsm scenarios; library focuses on stable formats
+      
+  v1.4.0 - MAJOR CLEANUP AND RENAME:
       - BREAKING: Renamed EncryptedXlsmManager to SecureExcelWorkbook (more descriptive)
       - DOCUMENTATION: Clarified Excel installation requirement for encryption features
       - Repository cleanup: Removed test files, examples, and alternative implementations from main library

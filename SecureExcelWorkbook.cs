@@ -5,14 +5,11 @@ using NPOI.SS.UserModel;
 namespace JFToolkit.EncryptedExcel;
 
 /// <summary>
-/// Secure Excel Workbook API for working with encrypted macro-enabled Excel files (.xlsm)
-/// Provides: Open encrypted .xlsm → Modify content → Save as encrypted .xlsm
+/// Secure Excel Workbook API for working with password-encrypted Excel files (.xlsx and .xls).
+/// Provides: Open encrypted workbook → Modify content → Save as encrypted workbook.
 /// 
-/// IMPORTANT: Reading and modifying works on any platform. However, saving WITH encryption 
-/// requires Microsoft Excel to be installed on Windows. Without Excel, files can still be 
-/// saved but without encryption.
-/// 
-/// Supports opening password-protected Excel files, modifying cell values, and saving to new encrypted files.
+/// IMPORTANT: Reading and modifying works on any platform. Saving WITH encryption requires
+/// Microsoft Excel on Windows. Macro-enabled (.xlsm) encrypted save is not supported in v1.5.0.
 /// </summary>
 public class SecureExcelWorkbook : IDisposable
 {
@@ -27,9 +24,9 @@ public class SecureExcelWorkbook : IDisposable
     public IWorkbook? Workbook => _reader?.Workbook;
 
     /// <summary>
-    /// Opens an encrypted .xlsm file for modification
+    /// Opens an encrypted .xlsx or .xls file for modification
     /// </summary>
-    /// <param name="filePath">Path to the encrypted .xlsm file</param>
+    /// <param name="filePath">Path to the encrypted .xlsx or .xls file</param>
     /// <param name="password">Password to decrypt the file</param>
     /// <returns>SecureExcelWorkbook instance for chaining operations</returns>
     public static SecureExcelWorkbook Open(string filePath, string password)
@@ -41,8 +38,8 @@ public class SecureExcelWorkbook : IDisposable
             throw new ArgumentException("Password cannot be null or empty", nameof(password));
 
         var extension = Path.GetExtension(filePath).ToLowerInvariant();
-        if (extension != ".xlsm")
-            throw new ArgumentException("File must be a .xlsm (macro-enabled) Excel file", nameof(filePath));
+        if (extension != ".xlsx" && extension != ".xls")
+            throw new ArgumentException("File must be an .xlsx or .xls Excel file", nameof(filePath));
 
         var manager = new SecureExcelWorkbook();
         manager._originalFilePath = filePath;
@@ -68,11 +65,7 @@ public class SecureExcelWorkbook : IDisposable
 
     /// <summary>
     /// Saves the modified workbook to a new file with the same password encryption.
-    /// 
-    /// IMPORTANT: This method requires Microsoft Excel to be installed on Windows for encryption.
-    /// If Excel is not available, the method returns false and the file is not saved.
-    /// 
-    /// For cross-platform compatibility, use Workbook.SaveToFile() to save without encryption.
+    /// IMPORTANT: Requires Microsoft Excel (Windows). For cross-platform, use Workbook.SaveToFile() (unencrypted).
     /// </summary>
     /// <param name="filePath">Path where to save the encrypted file</param>
     /// <returns>True if successfully saved with encryption, false if Excel is unavailable</returns>
@@ -82,16 +75,16 @@ public class SecureExcelWorkbook : IDisposable
             throw new ObjectDisposedException(nameof(SecureExcelWorkbook));
 
         var extension = Path.GetExtension(filePath).ToLowerInvariant();
-        if (extension != ".xlsm")
-            throw new ArgumentException("Target file must be a .xlsm (macro-enabled) Excel file", nameof(filePath));
+        if (extension != ".xlsx" && extension != ".xls")
+            throw new ArgumentException("Target file must be an .xlsx or .xls file", nameof(filePath));
 
         try
         {
-            // Try Excel automation first (most reliable for .xlsm encryption)
+            // Try Excel automation first (Excel handles encryption reliably)
             if (ExcelAutomationHelper.IsExcelAvailable())
             {
                 // Save to temporary unencrypted file first
-                string tempFile = Path.GetTempFileName() + ".xlsm";
+                string tempFile = Path.GetTempFileName() + extension;
                 
                 try
                 {
