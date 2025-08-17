@@ -66,6 +66,13 @@
     <PackageReference Include="DocumentFormat.OpenXml" Version="3.0.2" />
     <FrameworkReference Include="WindowsDesktop" Condition="'$(TargetFrameworkIdentifier)'=='NETCoreApp'" />
   </ItemGroup>
+  
+  <!-- Assembly attributes for internal test access (test project name placeholder) -->
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>JFToolkit.EncryptedExcel.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="WindowsBase" />
   </ItemGroup>
