@@ -1,12 +1,50 @@
-# JFToolkit.EncryptedExcel
+﻿# JFToolkit.EncryptedExcel (2.0.0-dev Experimental Reset)
 
-[![NuGet](https://img.shields.io/nuget/v/JFToolkit.EncryptedExcel.svg)](https://www.nuget.org/packages/JFToolkit.EncryptedExcel/)
-[![Downloads](https://img.shields.io/nuget/dt/JFToolkit.EncryptedExcel.svg)](https://www.nuget.org/packages/JFToolkit.EncryptedExcel/)
-[![GitHub](https://img.shields.io/github/license/JyslaFancy/JFToolkit.EncryptedExcel)](https://github.com/JyslaFancy/JFToolkit.EncryptedExcel/blob/main/LICENSE)
+This branch (develop / 2.0.0-dev) is an experimental **ground‑up redesign** removing all dependencies on:
+* NPOI
+* Excel COM automation (Microsoft Office)
 
-A clean, focused .NET library for working with password-encrypted Excel files (.xlsx and .xls). Features the **SecureExcelWorkbook** API for simple encrypted Excel workflows: open → modify → save. Built on NPOI with Excel automation for encryption.
+Current state: a **minimal placeholder** (`WorkbookPlaceholder`) that demonstrates the intended lightweight API surface while a new cross‑platform encrypted Excel engine is researched.
 
-> **⚠️ Important**: **Microsoft Excel must be installed** on the machine for encryption features (SaveAs with encryption). Reading and modifying encrypted files works without Excel. Macro-enabled .xlsm encryption is NOT supported in this release (1.5.0).
+## Why the Reset?
+The 1.x line relied on NPOI + Excel Automation for encryption. Goals for 2.x:
+1. Eliminate Excel installation requirement.
+2. Reduce dependency footprint.
+3. Provide predictable, testable core with pluggable format/encryption providers.
+4. Enable future streaming & zero‑copy scenarios.
+
+## What Exists Now
+* `WorkbookPlaceholder` – in‑memory single sheet, tab‑delimited export.
+* No real Excel parsing or encryption yet.
+
+## Near-Term Roadmap (Subject to Change)
+1. Define core abstractions: IWorkbookModel, IWorksheetModel, ICellModel.
+2. Implement thin OpenXML (.xlsx) reader (shared strings + basic cells).
+3. Add write support (simple sheet, limited types).
+4. Pluggable encryption layer (Agile encryption spec) without Excel.
+5. Streaming load/save for large sheets.
+
+## Example (Placeholder)
+```csharp
+using JFToolkit.EncryptedExcel;
+
+var wb = WorkbookPlaceholder.Create();
+wb.SetCell(0,0,"Hello");
+wb.SetCell(1,1,123);
+wb.SavePlainText("out.tsv");
+```
+
+## Not Production Ready
+Do not publish packages from this branch. It is intentionally incomplete.
+
+## Legacy (1.x)
+For stable functionality (encrypted .xlsx / .xls using NPOI + Excel), use the `main` branch and released NuGet versions (<=1.5.1).
+
+## License
+MIT (see LICENSE)
+
+---
+© 2025 JFToolkit – Experimental development in progress.
 
 ## 🚀 Key Features
 
